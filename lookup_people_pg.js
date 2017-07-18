@@ -13,7 +13,7 @@ const client = new pg.Client({
 });
 
 const query = {
-  name: 'lookup-firstname',
+  name: 'lookup-person',
   text: 'SELECT * FROM famous_people WHERE first_name = $1 OR last_name = $1',
   values:[args[0]]
 }
@@ -22,14 +22,18 @@ const query = {
 client.connect((err) => {
   if (err) {
     return console.error("Connection Error", err);
-  }
+  } console.log('Searching ...')
   client.query(query, (err, res) => {
     if (err) {
       return console.error("error running query", err);
     }
 
-    for (i in res.rows);
-    console.log(`Found ${res.rows.length} person(s) by the name ${args[i]}:\n - ${res.rows[i].first_name} ${res.rows[i].last_name}, born ${res.rows[i].birthdate}`)
+
+    console.log(`Found ${res.rows.length} person(s) by the name ${args[0]}:`);
+    for (i in res.rows){
+        let time = res.rows[i].birthdate.toString();
+        let dateTime = time.substring(0,15);
+        console.log(`${Number(i)+1}) ${res.rows[i].first_name} ${res.rows[i].last_name}, born ${dateTime}`)};
 
     client.end();
   });
