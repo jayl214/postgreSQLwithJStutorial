@@ -15,6 +15,7 @@ var knex = require('knex')({
 const args = process.argv.slice(2);
 const inputBirthDate = new Date(args[2]);
 
+
 knex('famous_people').insert(
   [{first_name: args[0], last_name: args[1], birthdate: inputBirthDate}],
   'id').asCallback((err, results)=>{
